@@ -19,7 +19,7 @@ import requests
 # ------------------ تنظیمات ------------------
 BOT_TOKEN = "8997153948:AAGeCopASjy92GEMuPx8c6vmoCVwhFry_OA"
 ADMIN_ID = 8957805774
-AUDD_TOKEN = "اینجا_توکن_AudD_رو_بذار"   # ← این خط رو حتماً عوض کن
+AUDD_TOKEN = "d78b1f04377ddcb73388d2d54a6ac26b"
 
 # ------------------ لاگ ------------------
 logging.basicConfig(
@@ -45,7 +45,7 @@ def download_instagram_video(url: str, output_path: str = "temp_video") -> str |
         "outtmpl": f"{output_path}.%(ext)s",
         "quiet": True,
         "no_warnings": True,
-        # "cookiefile": "cookies.txt",   # اگر نیاز شد فعال کن
+        # "cookiefile": "cookies.txt",
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -59,7 +59,7 @@ def download_instagram_video(url: str, output_path: str = "temp_video") -> str |
 def extract_audio(video_path: str, audio_path: str = "temp_audio.mp3") -> str | None:
     try:
         audio = AudioSegment.from_file(video_path)
-        audio = audio[:30000]  # فقط ۳۰ ثانیه اول
+        audio = audio[:30000]
         audio.export(audio_path, format="mp3")
         return audio_path
     except Exception as e:
@@ -218,10 +218,6 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
 # ------------------ اجرای ربات ------------------
 
 def main():
-    if AUDD_TOKEN == "اینجا_توکن_AudD_رو_بذار":
-        print("❌ لطفاً توکن AudD را داخل کد جایگزین کنید.")
-        return
-
     app = Application.builder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
