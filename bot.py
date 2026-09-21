@@ -1,6 +1,7 @@
 import os
 import re
 import logging
+import subprocess
 from datetime import datetime
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
@@ -13,7 +14,6 @@ from telegram.ext import (
     filters,
 )
 import yt_dlp
-from pydub import AudioSegment
 import requests
 
 # ------------------ تنظیمات ------------------
@@ -45,7 +45,6 @@ def download_instagram_video(url: str, output_path: str = "temp_video") -> str |
         "outtmpl": f"{output_path}.%(ext)s",
         "quiet": True,
         "no_warnings": True,
-        # "cookiefile": "cookies.txt",
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -57,11 +56,23 @@ def download_instagram_video(url: str, output_path: str = "temp_video") -> str |
         return None
 
 def extract_audio(video_path: str, audio_path: str = "temp_audio.mp3") -> str | None:
+    """استخراج صدا با FFmpeg (بدون pydub)"""
     try:
-        audio = AudioSegment.from_file(video_path)
-        audio = audio[:30000]
-        audio.export(audio_path, format="mp3")
-        return audio_path
+        # فقط ۳۰ ثانیه اول رو استخراج می‌کنیم
+        cmd = [
+            "ffmpeg",
+            "-y",
+            "-i", video_path,
+            "-t", "30",
+            "-vn",
+            "-acodec", "libmp3lame",
+            "-q:a", "4",
+            audio_path
+        ]
+        subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if os.path.exists(audio_path):
+            return audio_path
+        return None
     except Exception as e:
         logger.error(f"خطا در استخراج صدا: {e}")
         return None
