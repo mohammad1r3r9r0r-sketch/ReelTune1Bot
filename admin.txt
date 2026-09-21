@@ -1,0 +1,13 @@
+===== اطلاعات ادمین ReelTuneBot =====
+
+نام ادمین: Artery
+آیدی عددی ادمین: 8957805774
+یوزرنیم ربات: @ReelTune1Bot
+لینک ربات: https://t.me/ReelTune1Bot
+
+توکن ربات:
+8997153948:AAGeCopASjy92GEMuPx8c6vmoCVwhFry_OA
+
+نکات امنیتی:
+- این توکن رو به هیچکس نده
+- اگر لو رفت از BotFather دستور /revoke بزن و توکن جدید بگیر
